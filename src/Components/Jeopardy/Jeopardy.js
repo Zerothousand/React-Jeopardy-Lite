@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import Display from '../Jeopardy Display/displaygame'
 //import our service
 import JeopardyService from "../../jeopardyService";
 
@@ -20,6 +20,7 @@ class Jeopardy extends Component {
   }
   //get a new random question from the API and add it to the data object in state
   getNewQuestion() {
+    
     return this.client.getQuestion().then(result => {
       this.setState({
         data: result.data[0]
@@ -63,50 +64,26 @@ class Jeopardy extends Component {
   //when the component mounts, get a the first question
   componentDidMount() {
     this.getNewQuestion();
+    
   }
   //display the results on the screen
   render() {
-    // console.log(this.state.data)
-
+    console.log(this.state.data)
+    console.log(this.state.data.score)
     if (!this.state.data.category) {
       return <div>Loading</div>
 
     }
     return (
-      <div>
-        <div>
-          <label>Question: </label>
-          <p>{this.state.data.question}</p>
-        </div>
-        <div>
-          <label>
-            Value: {this.state.data.value}
-          </label>
-        </div>
-        <div>
-          <label>Category: </label>
-          {this.state.data.category.title}
-        </div>
-        <div>
-          <label>Score: {this.state.score}</label>
-        </div>
-
-        <div className='Contact'>
-          <form onSubmit={this.handleSubmit}>
-            <div>
-              <label htmlFor='answer'>Answer</label>
-              <input
-                type='text'
-                name='answer'
-                value={this.state.formData.answer}
-                onChange={this.handleChange}
-              />
-            </div>
-
-            <button>Submit Answer</button> <br />
-          </form>
-        </div>
-      </div>
+      <Display 
+        question={this.state.data.question}
+        value={this.state.data.value}
+        title={this.state.data.category.title}
+        score={this.state.score}
+        submit={this.handleSubmit}
+        change={this.handleChange}
+        answer={this.state.formData.answer}
+      />
     );
   }
 }
